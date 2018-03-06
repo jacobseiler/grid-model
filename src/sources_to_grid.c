@@ -24,12 +24,23 @@
 void read_update_nion(confObj_t simParam, sourcelist_t *thisSourcelist, grid_t *thisGrid, int snap)
 {
 	char sources_file[MAXLENGTH], nion_file[MAXLENGTH];
-	char snap_string[8];
+	char snap_string[MAXLENGTH];
+  int32_t num_chars;
 	
 	for(int i=0; i<MAXLENGTH; i++) sources_file[i]='\0';
 	for(int i=0; i<MAXLENGTH; i++) nion_file[i]='\0';
-	if(snap >= 0){
-		sprintf(snap_string,"%03d",snap); 
+	if(snap >= 0)
+  {
+    if (simParam->inputfiles_simulation == 1)
+    { 
+      num_chars = snprintf(snap_string, MAXLENGTH - 1, "%03d",snap+simParam->SimulationLowSnap);
+    }
+    else
+    { 
+      num_chars = snprintf(snap_string, MAXLENGTH - 1, "%03d",snap);
+    }
+
+    XASSERT(num_chars < MAXLENGTH - 1, "There was a string overflow when trying to assign the name of the snapshot string in 'read_update_nion'.\n");
 		
 		strcat(sources_file, simParam->sources_file);
 		strcat(sources_file, "_");
@@ -64,13 +75,16 @@ void read_update_nion(confObj_t simParam, sourcelist_t *thisSourcelist, grid_t *
 		fprintf(stderr, "No source or nion file available, or names are incorrect!\nCurrent source file is %s\n", sources_file);
 		exit(EXIT_FAILURE);
 	}
-	
-// 	for(int i=0; i<thisGrid->nbins*thisGrid->nbins*thisGrid->nbins; i++){
-// 		if(creal(thisGrid->nion[i])>0.){
-// // 			thisGrid->nion[i] = creal(thisGrid->nion[i])*5.e0 + 0.*I;
-// 			printf("nion[%d] = %e\n",i,creal(thisGrid->nion[i]));
-// 		}
-// 	}
+
+  printf("Boosting photons by a factor of %.4e\n", simParam->nion_factor);	
+ 	for(int i=0; i<thisGrid->nbins*thisGrid->nbins*thisGrid->nbins; i++)
+  {
+ 		if(creal(thisGrid->nion[i])>0.)
+    {
+      thisGrid->nion[i] = creal(thisGrid->nion[i])*simParam->nion_factor;
+ 			//printf("nion[%d] = %e\n",i,creal(thisGrid->nion[i]));
+ 		}
+ 	}
 }
 
 void read_update_nion_HeI(confObj_t simParam, sourcelist_t *thisSourcelist, grid_t *thisGrid, int snap)

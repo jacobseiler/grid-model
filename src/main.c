@@ -135,7 +135,8 @@ int main (int argc, /*const*/ char * argv[]) {
     redshift_list = read_redshift_list(simParam->redshift_file, num_cycles);
     if(redshift_list != NULL) num_cycles = num_cycles - 1;
     if(myRank==0) printf("done\n+++\n");
-    
+   
+    num_cycles = 1; 
     //read files (allocate grid)
     grid = initGrid();
     if(myRank==0) printf("\n++++\nreading files to grid... ");

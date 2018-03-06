@@ -22,24 +22,11 @@
 #include "density_distribution.h"
 #include "recombination.h"
 
+#include "utils.h"
+
 #define SQR(X) ((X) * (X))
 #define CUB(X) ((X) * (X) * (X))
-
-#ifdef NDEBUG
-#define XASSERT(EXP, ...)                                do{} while(0)
-#else
-#define XASSERT(EXP, ...)                                              \
-    do { if (!(EXP)) {                                                  \
-            printf("Error in file: %s\tfunc: %s\tline: %d with expression `"#EXP"'\n", __FILE__, __FUNCTION__, __LINE__); \
-            printf(__VA_ARGS__);                                        \
-            printf(ANSI_COLOR_BLUE "Bug in code: email Anne Hutter <ahutter@swin.edu.au>"ANSI_COLOR_RESET"\n"); \
-            fflush(stdout);                                             \
-            exit(EXIT_FAILURE);                                         \
-        } \
-    } while (0)
-#endif
-    
-    
+      
 double get_Xe(double XHII, double XHeII, double XHeIII, double Y, int specie)
 {
     double result = 1.;

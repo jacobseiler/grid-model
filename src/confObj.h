@@ -50,7 +50,12 @@ struct confObj_struct {
     double         box_size;
     
     int            input_doubleprecision;
+    int            input_nionprecision;
     int            inputfiles_comoving;
+
+    int            inputfiles_simulation;
+    int            SimulationLowSnap;
+    int            SimulationHighSnap;
 
     char           *igm_density_file;
     int            dens_in_overdensity;
@@ -60,7 +65,8 @@ struct confObj_struct {
     
     char           *sources_file;
     char           *nion_file;
-    
+    double         nion_factor;   
+ 
     //Output
     char           *out_XHII_file;
     int            write_photHI_file;

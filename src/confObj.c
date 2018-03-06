@@ -82,8 +82,17 @@ confObj_new(parse_ini_t ini)
     
     getFromIni(&(config->input_doubleprecision), parse_ini_get_int32,
                ini, "inputFilesAreInDoublePrecision", "Input");
+    getFromIni(&(config->input_nionprecision), parse_ini_get_int32,
+               ini, "nionFilesAreInDoublePrecision", "Input");
     getFromIni(&(config->inputfiles_comoving), parse_ini_get_int32,
                ini, "inputFilesAreComoving", "Input");
+
+    getFromIni(&(config->inputfiles_simulation), parse_ini_get_int32,
+               ini, "inputFilesAreSimulation", "Input");
+    getFromIni(&(config->SimulationLowSnap), parse_ini_get_int32,
+               ini, "SimulationLowSnap", "Input");
+    getFromIni(&(config->SimulationHighSnap), parse_ini_get_int32,
+               ini, "SimulationHighSnap", "Input");
 
     getFromIni(&(config->igm_density_file), parse_ini_get_string,
                ini, "inputIgmDensityFile", "Input");
@@ -100,7 +109,8 @@ confObj_new(parse_ini_t ini)
                ini, "inputSourcesFile", "Input");
     getFromIni(&(config->nion_file), parse_ini_get_string,
                ini, "inputNionFile", "Input");
-
+    getFromIni(&(config->nion_factor), parse_ini_get_double,
+               ini, "nion_factor", "Input");
     //Output
     getFromIni(&(config->out_XHII_file), parse_ini_get_string,
                ini, "output_XHII_file", "Output");

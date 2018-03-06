@@ -23,15 +23,25 @@
 void read_update_igm_density(confObj_t simParam, grid_t *thisGrid, int snap)
 {
 	char igm_density_file[MAXLENGTH];
-	char snap_string[8];
-    double mean_density = 1.;
-	
+	char snap_string[MAXLENGTH];
+  double mean_density = 1.;
+  int32_t num_chars;	
+
 	for(int i=0; i<MAXLENGTH; i++) igm_density_file[i]='\0';
 	if(snap >= 0)
 	{
-		sprintf(snap_string,"%03d",snap); 
+    if (simParam->inputfiles_simulation == 1)
+    { 
+      num_chars = snprintf(snap_string, MAXLENGTH - 1, "%03d.dens.dat",snap+simParam->SimulationLowSnap);
+    }
+    else
+    { 
+      num_chars = snprintf(snap_string, MAXLENGTH - 1, "%03d",snap);
+    }
+		
+    XASSERT(num_chars < MAXLENGTH - 1, "There was a string overflow when trying to assign the name of the snapshot string in 'read_update_igm_density'.\n");
+
 		strcat(igm_density_file, simParam->igm_density_file);
-		strcat(igm_density_file, "_");
 		strcat(igm_density_file, snap_string);
 		printf("\n reading %s\n", igm_density_file);
 	}else{
