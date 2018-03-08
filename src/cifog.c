@@ -1,4 +1,4 @@
-#include <stdlib.h>
+#include <stdlib.h> 
 #include <stdio.h>
 #include <string.h>
 #include <math.h>
@@ -31,22 +31,45 @@
 #include "input_redshifts.h"
 #include "input_grid.h"
 
+#include "restart.h"
+
 #include "cifog.h"
  
 int cifog(confObj_t simParam, const double *redshift_list, grid_t *grid, sourcelist_t *sourcelist,
-          const integral_table_t *integralTable, photIonlist_t *photIonBgList, const int num_cycles, const int myRank)
+          const integral_table_t *integralTable, photIonlist_t *photIonBgList, const int num_cycles, const int myRank, const int RestartMode)
 {
     const double f = simParam->f;
     double delta_redshift = 0.;
     
     int snap=-1;
-    char photHIFile[MAXLENGTH], XionFile[MAXLENGTH];
-    
+    char photHIFile[MAXLENGTH], XionFile[MAXLENGTH], restartFile[MAXLENGTH];;
+   
+    int32_t status, start_cycle;
+ 
     //-------------------------------------------------------------------------------
     // start the loop
     //-------------------------------------------------------------------------------
-    
-    for(int cycle=0; cycle<num_cycles; cycle++)
+
+    if (RestartMode == 2 || RestartMode == 3)
+    {
+      // Open up the restart file
+      printf("Restarting from a previous cycle.\n");
+      
+      snprintf(restartFile, 1024, "%s", simParam->out_restart_file);
+      
+      status = read_restart_file(simParam, grid, &start_cycle, &snap, restartFile);
+      if (status == EXIT_FAILURE)
+      {
+        exit(EXIT_FAILURE);
+      }
+      
+    }
+    else
+    {
+      start_cycle = 0;
+    }
+
+    for(int cycle=start_cycle; cycle<num_cycles; cycle++)
     {
         if(redshift_list != NULL)
         {
@@ -289,6 +312,24 @@ int cifog(confObj_t simParam, const double *redshift_list, grid_t *grid, sourcel
             save_to_file(grid->photHI, grid, photHIFile);
             if(myRank==0) printf("done\n+++\n");
         }
+
+       if(RestartMode == 1 || RestartMode == 3)
+       {
+         // User wanted to save every snapshot.
+         if(myRank == 0)
+         {
+           printf("Saving restart file %s\n", restartFile);
+         }
+         snprintf(restartFile, MAXLENGTH, "%s_%02d", simParam->out_restart_file, snap);
+            
+         status = save_restart_file(simParam, grid, cycle, snap, restartFile, myRank);
+         if (status == EXIT_FAILURE)
+         {
+           exit(EXIT_FAILURE);
+         }
+         printf("Done!\n");
+       }
+       
     }
     
     return EXIT_SUCCESS;

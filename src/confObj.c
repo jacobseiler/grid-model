@@ -118,7 +118,8 @@ confObj_new(parse_ini_t ini)
                ini, "write_photHI_file", "Output");
     getFromIni(&(config->out_photHI_file), parse_ini_get_string,
                ini, "output_photHI_file", "Output");
-
+    getFromIni(&(config->out_restart_file), parse_ini_get_string,
+               ini, "output_restart_file", "Output");
     
     //Cosmology
     getFromIni(&(config->h), parse_ini_get_double,
@@ -212,6 +213,7 @@ confObj_del(confObj_t *config)
     //Output
     xfree((*config)->out_XHII_file);
     xfree((*config)->out_photHI_file);
+    xfree((*config)->out_restart_file);
     
     //Photoionization
     xfree((*config)->photHI_bg_file);

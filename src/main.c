@@ -56,7 +56,7 @@ int main (int argc, /*const*/ char * argv[]) {
     
     double zstart = 0., zend = 0., delta_redshift = 0.;
     int num_cycles;
-        
+    int32_t RestartMode = 0, i;    
 #ifdef __MPI
     MPI_Init(&argc, &argv); 
     MPI_Comm_size(MPI_COMM_WORLD, &size); 
@@ -70,14 +70,51 @@ int main (int argc, /*const*/ char * argv[]) {
 #endif
     
     //parse command line arguments and be nice to user
-    if (argc != 2) {
+
+    if (argc < 2 || argc > 4)
+    {
         printf("cifog: (C)  - Use at own risk...\n");
         printf("USAGE:\n");
         printf("cifog iniFile\n");
-        
+        printf("Optionally: Use -s before iniFile to save a restart file after each output.\n");
+        printf("Optionally: Use -r before iniFile to resume from a restart file.\n");
+
         exit(EXIT_FAILURE);
-    } else {
-        strcpy(iniFile, argv[1]);
+    }
+    else 
+    {
+      printf("Executing with parameters: %s ", argv[0]);
+      // Here we check for any runtime flags and copy the Inifile.
+      i = 1;
+      while ((i < argc))
+      {
+        printf("%s ", argv[i]);
+        if (argv[i][0] == '-')
+        {
+          switch (argv[i][1])
+          {
+            case 's':
+              RestartMode += 1;
+              break;
+
+      
+            case 'r':
+              RestartMode += 2;
+              break;
+      
+            default:
+              printf("Invalid flag, Only -s and -r are supported\n");
+              exit(EXIT_FAILURE);
+          }
+        }
+        else
+        {
+          strcpy(iniFile, argv[i]);
+        }
+
+        ++i;
+      }
+      printf("\n");
     }
     
     //-------------------------------------------------------------------------------
@@ -170,7 +207,7 @@ int main (int argc, /*const*/ char * argv[]) {
         }
     }
     
-    cifog(simParam, redshift_list, grid, sourcelist, integralTable, photIonBgList, num_cycles, myRank);
+    cifog(simParam, redshift_list, grid, sourcelist, integralTable, photIonBgList, num_cycles, myRank, RestartMode);
     
 
     //--------------------------------------------------------------------------------
