@@ -177,7 +177,7 @@ void read_files_to_grid(grid_t *thisGrid, confObj_t thisInput)
 	initialize_grid(thisGrid->frac_Q, nbins, local_n0, 0.);
 	
 	initialize_grid(thisGrid->XHII, nbins, local_n0, 0.);
-    initialize_grid(thisGrid->nrec, nbins, local_n0, 0.);
+  initialize_grid(thisGrid->nrec, nbins, local_n0, 0.);
 	initialize_grid(thisGrid->photHI, nbins, local_n0, 0.);
 	
     if(solve_He == 1){
@@ -214,7 +214,7 @@ void read_array(fftw_complex *toThisArray, grid_t *thisGrid, char *filename, int
 	
 	nbins = thisGrid->nbins;
 	local_n0 = thisGrid->local_n0;
-	
+
 	if(double_precision == 1)
 	{
 #ifdef __MPI
@@ -257,7 +257,7 @@ void read_grid(fftw_complex *toThisArray, int nbins, int local_n0, char *filenam
 	MPI_Status status;
 	
 	offset = (local_0_start*nbins*nbins*sizeof(float));
-	
+
 	success = MPI_File_open(MPI_COMM_WORLD, filename, MPI_MODE_RDONLY,MPI_INFO_NULL, &mpifile);
 	if(success != MPI_SUCCESS)
 	{
@@ -265,8 +265,10 @@ void read_grid(fftw_complex *toThisArray, int nbins, int local_n0, char *filenam
 		fprintf(stderr, "MPI_File_open(): %s\n", msg);
 		exit(-1);
 	}
-	MPI_File_read_at_all(mpifile,offset,tmparray, local_n0*nbins*nbins,MPI_FLOAT,&status);
+  
+	MPI_File_read_at_all(mpifile,offset,tmparray, local_n0*nbins*nbins,MPI_FLOAT,&status); 
 	MPI_File_close(&mpifile);
+
 #else
 	FILE *fp;
 	fp = fopen(filename, "rb");
@@ -280,7 +282,7 @@ void read_grid(fftw_complex *toThisArray, int nbins, int local_n0, char *filenam
 		{
 			for(int k=0; k<nbins; k++)
 			{
-				toThisArray[i*nbins*nbins+j*nbins+k] = (double)tmparray[i*nbins*nbins+j*nbins+k]+0.*I;
+				toThisArray[i*nbins*nbins+j*nbins+k] = (float)tmparray[i*nbins*nbins+j*nbins+k]+0.*I;
 			}
 		}
 	}
@@ -426,14 +428,13 @@ void write_grid_to_file_float(fftw_complex *thisArray, int nbins, int local_n0, 
 	MPI_Status status;
 	
 	offset = (local_0_start*nbins*nbins*sizeof(float));
-
 	MPI_File_open(MPI_COMM_WORLD, filename, MPI_MODE_CREATE|MPI_MODE_WRONLY, MPI_INFO_NULL, &mpifile);
 	MPI_File_write_at_all(mpifile, offset, tmparray, local_n0*nbins*nbins, MPI_FLOAT, &status);
 	MPI_File_close(&mpifile);
 #else
 	FILE * fp;
-	
-	fp = fopen(filename, "wb");
+
+  fp = fopen(filename, "wb"); 
 	fwrite(tmparray, sizeof(float), nbins*nbins*nbins, fp);
 	fclose(fp);
 #endif
@@ -473,14 +474,14 @@ void write_grid_to_file_double(fftw_complex *thisArray, int nbins, int local_n0,
 	MPI_Status status;
 	
 	offset = (local_0_start*nbins*nbins*sizeof(double));
+  MPI_File_open(MPI_COMM_WORLD, filename, MPI_MODE_CREATE|MPI_MODE_WRONLY, MPI_INFO_NULL, &mpifile);
+  MPI_File_write_at_all(mpifile, offset, tmparray, local_n0*nbins*nbins, MPI_DOUBLE, &status);
+  MPI_File_close(&mpifile);
 	
-	MPI_File_open(MPI_COMM_WORLD, filename, MPI_MODE_CREATE|MPI_MODE_WRONLY, MPI_INFO_NULL, &mpifile);
-	MPI_File_write_at_all(mpifile, offset, tmparray, local_n0*nbins*nbins, MPI_DOUBLE, &status);
-	MPI_File_close(&mpifile);
 #else
 	FILE * fp;
-	
-	fp = fopen(filename, "wb");
+
+  fp = fopen(filename, "wb");	
 	fwrite(tmparray, sizeof(double), nbins*nbins*nbins, fp);
 	fclose(fp);
 #endif

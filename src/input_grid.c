@@ -25,30 +25,29 @@ void read_update_igm_density(confObj_t simParam, grid_t *thisGrid, int snap)
 	char igm_density_file[MAXLENGTH];
 	char snap_string[MAXLENGTH];
   double mean_density = 1.;
-  int32_t num_chars;	
 
+  printf("Updating IGM density\n");	
 	for(int i=0; i<MAXLENGTH; i++) igm_density_file[i]='\0';
 	if(snap >= 0)
 	{
     if (simParam->inputfiles_simulation == 1)
-    { 
-      num_chars = snprintf(snap_string, MAXLENGTH - 1, "%03d.dens.dat",snap+simParam->SimulationLowSnap);
+    {
+		  sprintf(snap_string,"%03d.dens.dat",snap+simParam->SimulationLowSnap);
     }
     else
-    { 
-      num_chars = snprintf(snap_string, MAXLENGTH - 1, "%03d",snap);
-    }
-		
-    XASSERT(num_chars < MAXLENGTH - 1, "There was a string overflow when trying to assign the name of the snapshot string in 'read_update_igm_density'.\n");
-
-		strcat(igm_density_file, simParam->igm_density_file);
+    {
+		  sprintf(snap_string,"%03d",snap);
+    }            
+		strcat(igm_density_file, simParam->igm_density_file);   
 		strcat(igm_density_file, snap_string);
 		printf("\n reading %s\n", igm_density_file);
-	}else{
+  
+	}else{  
 		strcat(igm_density_file, simParam->igm_density_file);
 		printf("\n reading %s\n", igm_density_file);
 	}
   
+  printf("\n reading %s\n", igm_density_file);
 	if(file_exist(igm_density_file) == 1)
 	{
 		read_array(thisGrid->igm_density, thisGrid, igm_density_file, simParam->input_doubleprecision);
@@ -87,6 +86,7 @@ void read_update_igm_density(confObj_t simParam, grid_t *thisGrid, int snap)
 	else
 	{
 		fprintf(stderr, "No density file available, or names are incorrect!\n");
+		fprintf(stderr, "I attempted to read from %s\n", igm_density_file);
 		exit(EXIT_FAILURE);
 	}
 }
@@ -123,6 +123,9 @@ void read_update_igm_clump(confObj_t simParam, grid_t *thisGrid, int snap)
 	else
 	{
 		printf(" no clumping factor file exist; assume a clumping factor = 1\n");
+
+    
+
 	}
 	
 	double sum = 0.;
@@ -135,6 +138,8 @@ void read_update_igm_clump(confObj_t simParam, grid_t *thisGrid, int snap)
 		{
 			for(int k=0; k<nbins; k++)
 			{
+         
+                thisGrid->igm_clump[i*nbins*nbins+j*nbins+k] = 1.0 + 0.0I; 
                 sum += creal(thisGrid->igm_clump[i*nbins*nbins+j*nbins+k]);
             }
         }

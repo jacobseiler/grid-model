@@ -70,14 +70,14 @@ void read_update_nion(confObj_t simParam, sourcelist_t *thisSourcelist, grid_t *
         //deallocate sources
         deallocate_sourcelist(thisSourcelist);
 	}else if(file_exist(nion_file) == 1){
-		read_array(thisGrid->nion, thisGrid, nion_file, simParam->input_doubleprecision);
+		read_array(thisGrid->nion, thisGrid, nion_file, simParam->input_nionprecision);
 	}else{
 		fprintf(stderr, "No source or nion file available, or names are incorrect!\nCurrent source file is %s\n", sources_file);
 		exit(EXIT_FAILURE);
 	}
 
   printf("Boosting photons by a factor of %.4e\n", simParam->nion_factor);	
- 	for(int i=0; i<thisGrid->nbins*thisGrid->nbins*thisGrid->nbins; i++)
+ 	for(int i=0; i<thisGrid->local_n0*thisGrid->nbins*thisGrid->nbins; i++)
   {
  		if(creal(thisGrid->nion[i])>0.)
     {

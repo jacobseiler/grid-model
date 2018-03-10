@@ -71,6 +71,7 @@ struct confObj_struct {
     char           *out_XHII_file;
     int            write_photHI_file;
     char           *out_photHI_file;
+    char           *out_restart_file;
     
     //Cosmology
     double         h;
