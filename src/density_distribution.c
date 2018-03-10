@@ -236,6 +236,7 @@ double dd_calc_mfp(confObj_t simParam, double photHI_bg, double temperature, dou
 
 void set_mfp_Miralda2000(confObj_t simParam)
 {
+  printf("Calculating mfp with a photHI_bg = %.4f at redshift %.4f\n", simParam->photHI_bg, simParam->redshift);
 	simParam->mfp = dd_calc_mfp(simParam, simParam->photHI_bg, 1.e4, simParam->redshift);
 }
 

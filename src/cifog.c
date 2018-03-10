@@ -316,11 +316,11 @@ int cifog(confObj_t simParam, const double *redshift_list, grid_t *grid, sourcel
        if(RestartMode == 1 || RestartMode == 3)
        {
          // User wanted to save every snapshot.
+         snprintf(restartFile, MAXLENGTH, "%s", simParam->out_restart_file);
          if(myRank == 0)
          {
            printf("Saving restart file %s\n", restartFile);
          }
-         snprintf(restartFile, MAXLENGTH, "%s_%02d", simParam->out_restart_file, snap);
             
          status = save_restart_file(simParam, grid, cycle, snap, restartFile, myRank);
          if (status == EXIT_FAILURE)

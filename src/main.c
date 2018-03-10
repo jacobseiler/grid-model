@@ -33,43 +33,16 @@
 
 #include "cifog.h"
 
-int main (int argc, /*const*/ char * argv[]) { 
-#ifdef __MPI
-    int size = 1;
-#endif
-    int myRank = 0;
+// Local Proto-Types //
 
-    char iniFile[MAXLENGTH];
-    confObj_t simParam;
-    
-    double *redshift_list = NULL;
-    
-    grid_t *grid = NULL;
-    
-    sourcelist_t *sourcelist = NULL;
-    
-    integral_table_t *integralTable = NULL;
-    
-    photIonlist_t *photIonBgList = NULL;
-    
-    double t1, t2;
-    
-    double zstart = 0., zend = 0., delta_redshift = 0.;
-    int num_cycles;
-    int32_t RestartMode = 0, i;    
-#ifdef __MPI
-    MPI_Init(&argc, &argv); 
-    MPI_Comm_size(MPI_COMM_WORLD, &size); 
-    MPI_Comm_rank(MPI_COMM_WORLD, &myRank); 
-    
-    t1 = MPI_Wtime();
-    
-    fftw_mpi_init();
-#else
-    t1 = time(NULL);
-#endif
-    
-    //parse command line arguments and be nice to user
+int32_t parse_params(int32_t argc, char **argv, char *iniFile, int32_t *RestartMode);
+
+// Local Functions //
+
+int32_t parse_params(int32_t argc, char **argv, char *iniFile, int32_t *RestartMode)
+{
+
+    int32_t i;
 
     if (argc < 2 || argc > 4)
     {
@@ -94,12 +67,13 @@ int main (int argc, /*const*/ char * argv[]) {
           switch (argv[i][1])
           {
             case 's':
-              RestartMode += 1;
+              *RestartMode += 1;
               break;
 
       
             case 'r':
-              RestartMode += 2;
+              *RestartMode += 2;
+        
               break;
       
             default:
@@ -115,8 +89,68 @@ int main (int argc, /*const*/ char * argv[]) {
         ++i;
       }
       printf("\n");
+      if (*RestartMode == 1)
+      {
+        printf("Saving a restart file after each output.\n");
+      }
+      else if (*RestartMode == 2)
+      {
+        printf("Resuming from the restart file specified in %s\n", iniFile);
+      } 
+      else if (*RestartMode == 3)
+      {
+        printf("Resuming from the restart file specified in %s and then saving a restart file after each subsequent output.\n", iniFile);
+      }
     }
+
+  return EXIT_SUCCESS;
+
+}
+
+int main (int argc, /*const*/ char * argv[]) { 
+#ifdef __MPI
+    int size = 1;
+#endif
+    int myRank = 0;
+
+    char iniFile[MAXLENGTH];
+    confObj_t simParam;
     
+    double *redshift_list = NULL;
+    
+    grid_t *grid = NULL;
+    
+    sourcelist_t *sourcelist = NULL;
+    
+    integral_table_t *integralTable = NULL;
+    
+    photIonlist_t *photIonBgList = NULL;
+    
+    double t1, t2;
+    
+    double zstart = 0., zend = 0., delta_redshift = 0.;
+    int num_cycles;
+    int32_t RestartMode = 0, status;
+#ifdef __MPI
+    MPI_Init(&argc, &argv); 
+    MPI_Comm_size(MPI_COMM_WORLD, &size); 
+    MPI_Comm_rank(MPI_COMM_WORLD, &myRank); 
+    
+    t1 = MPI_Wtime();
+    
+    fftw_mpi_init();
+#else
+    t1 = time(NULL);
+#endif
+    
+    //parse command line arguments and be nice to user
+
+    status = parse_params(argc, argv, iniFile, &RestartMode); // Set the input parameters.
+    if (status == EXIT_FAILURE)
+    {
+      exit(EXIT_FAILURE);
+    }   
+ 
     //-------------------------------------------------------------------------------
     // reading input files and prepare grid
     //-------------------------------------------------------------------------------
@@ -173,7 +207,7 @@ int main (int argc, /*const*/ char * argv[]) {
     if(redshift_list != NULL) num_cycles = num_cycles - 1;
     if(myRank==0) printf("done\n+++\n");
    
-    num_cycles = 1; 
+    //num_cycles = 30; 
     //read files (allocate grid)
     grid = initGrid();
     if(myRank==0) printf("\n++++\nreading files to grid... ");
