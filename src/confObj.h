@@ -24,6 +24,7 @@ typedef struct confObj_struct *confObj_t;
 struct confObj_struct {
     //General
     int            num_snapshots;
+    int32_t        stop_snapshot;
     char           *redshift_file;
     double         redshift_prev_snap;
     double         redshift;
