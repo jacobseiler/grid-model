@@ -83,7 +83,7 @@ confObj_new(parse_ini_t ini)
                ini, "boxsize", "Input");
     
     getFromIni(&(config->input_doubleprecision), parse_ini_get_int32,
-               ini, "inputFilesAreInDoublePrecision", "Input");
+               ini, "densityFilesAreInDoublePrecision", "Input");
     getFromIni(&(config->input_nionprecision), parse_ini_get_int32,
                ini, "nionFilesAreInDoublePrecision", "Input");
     getFromIni(&(config->inputfiles_comoving), parse_ini_get_int32,

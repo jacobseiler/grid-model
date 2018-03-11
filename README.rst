@@ -92,6 +92,7 @@ Parameter file
 
 - ``calcIonHistory``: set to 1 if ionization history should be calculated (either from a single snapshot from redshift_prevSnapshot to redshift, or from the given redshift_file), otherwise 0.
 - ``numSnapshots``: number of outputs (**Note**: output is automatically created for all redshifts where input files change)
+- ``stopSnapshot``: number of outputs until the code stops.  (**Note**: snapshot counting starts at 0) 
 - ``redshiftFile``: redshifts of in- and outputs: 1 for new input files & 0 for no new input file but output file
 - ``redshift_prevSnapshot``: redshift to start the calculation, if no redshift_file is provided
 - ``finalRedshift``: final redshift (for calcIonHistory = 1), or redshift of output (for calcIonHistory = 0)
@@ -120,8 +121,13 @@ Parameter file
 - ``gridsize``: size of the grid (should be a power of 2)
 - ``boxsize``: comoving boxsize in Mpc/h
 
-- ``inputFilesAreInDoublePrecision``: 0 for single, 1 for double precision of data files to be read in
+- ``densityFilesAreInDoublePrecision``: 0 for single, 1 for double precision of IGM density data files to be read in
+- ``nionFilesAreInDoublePrecision``: 0 for single, 1 for double precision of the data ionizing photon grids (``inputNionFile`` is specified) to be read in
 - ``inputFilesAreComoving``: set to 1 if input files are comoving, otherwise 0
+
+- ``inputFilesAreSimulation``: set to 1 if input files are from a simulation.  This allows the first snapshot to be read in be named _028 rather than _000 and names the output in a similar manner
+- ``SimulationLowSnap``: if the input is from a simulation (``inputFilesAreSimulation``), this controls the snapshot number of the first snapshot being read in 
+- ``SimulationHighSnap``: same as ``SimulationLowSnap`` but for the largest snapshot number being read in 
 
 - ``inputIgmDensityFile``: name of density file containing 3D density grid (if multiple then just the basename and neglecting extensions _00i)
 - ``densityInOverdensity``: set to 1 if density is in terms of overdensity i.e. rho/mean(rho), otherwise 0
@@ -131,6 +137,7 @@ Parameter file
 
 - ``inputSourcesFile``: (if existing) file containing the sources (first line: #sources; every other line: x, y, z, Nion [s^-1], ID, fesc)
 - ``inputNionFile``: (if existing) name of file containing 3D grid of Nion [s^-1]
+- ``nion_factor``: used to multiply each value of ``inputNionFile``.  Useful if the input values are in units other than [s^-1].  
 
 **Output**
 ..........
@@ -138,6 +145,7 @@ Parameter file
 - ``output_XHII_file``: basename for output of XHII fields
 - ``write_photHI_file``: set to 1 if photoionization file should be written
 - ``output_photHI_file``: basename for output of HI photoionization fields
+- ``output_restart_file``: name of the restart file.  See the **Restarting From Previous Snapshot** Section for more information
 
 **Cosmology**
 .............
@@ -220,6 +228,6 @@ This command should execute various python scripts in ``/analysis_tools`` that g
 
 - the ionization history (HI, HeI, HeIII)
 - the evolution of the 21cm power spectrum
-- the evolution of the power spectrum of ionized gas density
+/bin/bash: ZZ: command not found
 - the evolution of the power spectrum of the neutral gas density
 - slices of the HI (HeI, HeIII) fraction
