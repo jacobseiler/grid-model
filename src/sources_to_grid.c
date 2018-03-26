@@ -72,7 +72,7 @@ void read_update_nion(confObj_t simParam, sourcelist_t *thisSourcelist, grid_t *
 	}else if(file_exist(nion_file) == 1){
 		read_array(thisGrid->nion, thisGrid, nion_file, simParam->input_nionprecision);
 	}else{
-		fprintf(stderr, "No source or nion file available, or names are incorrect!\nCurrent source file is %s\n", sources_file);
+		fprintf(stderr, "No source or nion file available, or names are incorrect!\nCurrent source file is %s\nCurrent nion file is %s", sources_file, nion_file);
 		exit(EXIT_FAILURE);
 	}
 
@@ -92,6 +92,8 @@ void read_update_nion_HeI(confObj_t simParam, sourcelist_t *thisSourcelist, grid
 	char sources_file[MAXLENGTH], nion_file[MAXLENGTH];
 	char snap_string[8];
 	
+  printf("SNAP %d\n", snap); 
+  exit(0);
 	for(int i=0; i<MAXLENGTH; i++) sources_file[i]='\0';
 	for(int i=0; i<MAXLENGTH; i++) nion_file[i]='\0';
 	if(snap >= 0){
@@ -108,7 +110,7 @@ void read_update_nion_HeI(confObj_t simParam, sourcelist_t *thisSourcelist, grid
 		strcat(sources_file, simParam->sources_HeI_file);
 		strcat(nion_file, simParam->nion_HeI_file);
 	}
-  
+ 
 	if(file_exist(sources_file) == 1){
 		//read source files (allocate sources)
 		if(thisSourcelist != NULL){
@@ -126,7 +128,7 @@ void read_update_nion_HeI(confObj_t simParam, sourcelist_t *thisSourcelist, grid
 	}else if(file_exist(nion_file) == 1){
 		read_array(thisGrid->nion_HeI, thisGrid, nion_file, simParam->input_doubleprecision);
 	}else{
-		fprintf(stderr, "No source or nion file available, or names are incorrect!\nCurrent source file is %s\n", sources_file);
+		fprintf(stderr, "No source or nion file available or names are incorrect!\nCurrent source file is %s\nCurrent nion file is %s\n", sources_file, nion_file);
 		exit(EXIT_FAILURE);
 	}
 	for(int i=0; i<thisGrid->nbins*thisGrid->nbins*thisGrid->nbins; i++){
@@ -176,7 +178,7 @@ void read_update_nion_HeII(confObj_t simParam, sourcelist_t *thisSourcelist, gri
 	}else if(file_exist(nion_file) == 1){
 		read_array(thisGrid->nion_HeII, thisGrid, nion_file, simParam->input_doubleprecision);
 	}else{
-		fprintf(stderr, "No source or nion file available, or names are incorrect!\nCurrent source file is %s\n", sources_file);
+		fprintf(stderr, "No source or nion file available, or names are incorrect!\nCurrent source file is %s\nCurrent nion file is %s\n", sources_file, nion_file);
 		exit(EXIT_FAILURE);
 	}
 }
