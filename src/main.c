@@ -42,6 +42,7 @@ int32_t parse_params(int32_t argc, char **argv, char *iniFile, int32_t *RestartM
 int32_t parse_params(int32_t argc, char **argv, char *iniFile, int32_t *RestartMode)
 {
 
+    printf("hello!");
     int32_t i;
 
     if (argc < 2 || argc > 4)
