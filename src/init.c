@@ -119,3 +119,33 @@ int32_t init_cifog(char *iniFile, confObj_t *simParam, double **redshift_list, g
 
     return EXIT_SUCCESS;  
 }
+
+int32_t cleanup_cifog(confObj_t simParam, integral_table_t *integralTable, photIonlist_t *photIonBgList, 
+                      grid_t *grid, double *redshift_list, int32_t myRank)
+{
+    if(simParam->calc_recomb == 2)
+    {
+        //read table for recombinations
+        if(myRank==0) printf("\n++++\ndeallocating table for recominsations... ");
+        free(integralTable);
+        if(myRank==0) printf("done\n+++\n");
+    }
+
+    if(myRank==0) printf("\n++++\ndeallocating background photionization rate list... ");
+    deallocate_photIonlist(photIonBgList);
+    if(myRank==0) printf("done\n+++\n");
+
+    //deallocate grid
+    if(myRank==0) printf("\n++++\ndeallocating grid ...");
+    deallocate_grid(grid, simParam);
+    if(myRank==0) printf("done\n+++\n");
+    
+    //deallocate redshift list
+    if(myRank==0) printf("\n++++\ndeallocating redshift list ...");
+    deallocateRedshift_list(redshift_list);
+    if(myRank==0) printf("done\n+++\n");
+    
+    confObj_del(&simParam);
+
+    return EXIT_SUCCESS;
+}

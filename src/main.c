@@ -189,35 +189,15 @@ int main (int argc, /*const*/ char * argv[]) {
     // Run the actual code.
     cifog(simParam, redshift_list, grid, sourcelist, integralTable, photIonBgList, num_cycles, myRank, RestartMode);
     
-
     //--------------------------------------------------------------------------------
     // deallocating grids
     //--------------------------------------------------------------------------------
-    if(simParam->calc_recomb == 2)
+    status = cleanup_cifog(simParam, integralTable, photIonBgList, grid, redshift_list, myRank);
+    if (status !=  EXIT_SUCCESS)
     {
-        //read table for recombinations
-        if(myRank==0) printf("\n++++\ndeallocating table for recominsations... ");
-        free(integralTable);
-        if(myRank==0) printf("done\n+++\n");
-    }
+      exit(EXIT_FAILURE);
+    } 
 
-    if(myRank==0) printf("\n++++\ndeallocating background photionization rate list... ");
-    deallocate_photIonlist(photIonBgList);
-    if(myRank==0) printf("done\n+++\n");
-
-    //deallocate grid
-    if(myRank==0) printf("\n++++\ndeallocating grid ...");
-    deallocate_grid(grid, simParam);
-    if(myRank==0) printf("done\n+++\n");
-    
-    //deallocate redshift list
-    if(myRank==0) printf("\n++++\ndeallocating redshift list ...");
-    deallocateRedshift_list(redshift_list);
-    if(myRank==0) printf("done\n+++\n");
-    
-    confObj_del(&simParam);
-    
-    if(myRank==0) printf("\nFinished\n");
 #ifdef __MPI
     fftw_mpi_cleanup();
         
