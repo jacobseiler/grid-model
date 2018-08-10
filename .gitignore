@@ -2,3 +2,4 @@
 *.o
 *~
 cifog
+libcifog.a

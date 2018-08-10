@@ -25,6 +25,7 @@ SOURCES := 	./src/main.c \
 OBJECTS := $(SOURCES:.c=.o)
 DOBJECTS := $(SOURCES:.c=.d)
 EXECUTABLE := cifog
+LIB := libcifog.a
 
 USE-MPI=YES
  
@@ -33,10 +34,17 @@ include common.mk
 
 .PHONY: all clean clena celan celna
 
-all: $(SOURCES) $(EXECUTABLE)
+default: lib
+
+lib: $(SOURCES) $(LIB)
+
+exec: $(SOURCES) $(EXECUTABLE)
 
 celan celna clena:clean
 
+$(LIB): $(OBJECTS)
+	$(CC) $(OBJECTS) -c $(LDFLAGS)
+	ar rcs $(LIB) $(OBJECTS)
 
 $(EXECUTABLE): $(OBJECTS)
 	$(CC) $(OBJECTS) $(LDFLAGS) -o $@
