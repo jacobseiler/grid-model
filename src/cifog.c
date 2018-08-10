@@ -76,8 +76,11 @@ int cifog(confObj_t simParam, const double *redshift_list, grid_t *grid, sourcel
             simParam->redshift_prev_snap = redshift_list[2*cycle];
             simParam->redshift = redshift_list[2*(cycle + 1)];
             delta_redshift = redshift_list[2*cycle] - redshift_list[2*(cycle + 1)];
-            
-            if((redshift_list[2*cycle+1] == 1) || (cycle == 0)) snap++;
+           
+            printf("Redshift List no null");
+            printf("%.4f\n", redshift_list[2*cycle+1]); 
+            if((redshift_list[2*cycle+1] == 1) || (cycle == 0)) 
+              snap++;
         }
         else if(cycle !=0 && redshift_list == NULL)
         {
@@ -89,7 +92,8 @@ int cifog(confObj_t simParam, const double *redshift_list, grid_t *grid, sourcel
         {
             printf("\n******************\nSNAP %d\t CYCLE %d\n******************\n", snap, cycle);
         }
-        
+        if (snap == -1)
+          exit(0); 
         if(myRank==0) printf("\n++++\nreading sources/nion file for snap = %d... ", snap);
         read_update_nion(simParam, sourcelist, grid, snap);
         if(myRank==0) printf("done\n+++\n");

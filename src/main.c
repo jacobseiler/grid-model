@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <string.h>
 #include <math.h>
@@ -33,6 +34,8 @@
 
 #include "cifog.h"
 
+#include "init.h"
+
 // Local Proto-Types //
 
 int32_t parse_params(int32_t argc, char **argv, char *iniFile, int32_t *RestartMode);
@@ -41,8 +44,6 @@ int32_t parse_params(int32_t argc, char **argv, char *iniFile, int32_t *RestartM
 
 int32_t parse_params(int32_t argc, char **argv, char *iniFile, int32_t *RestartMode)
 {
-
-    printf("hello!");
     int32_t i;
 
     if (argc < 2 || argc > 4)
@@ -109,9 +110,6 @@ int32_t parse_params(int32_t argc, char **argv, char *iniFile, int32_t *RestartM
 }
 
 int main (int argc, /*const*/ char * argv[]) { 
-#ifdef __MPI
-    int size = 1;
-#endif
     int myRank = 0;
 
     char iniFile[MAXLENGTH];
@@ -129,10 +127,10 @@ int main (int argc, /*const*/ char * argv[]) {
     
     double t1, t2;
     
-    double zstart = 0., zend = 0., delta_redshift = 0.;
     int num_cycles;
     int32_t RestartMode = 0, status;
 #ifdef __MPI
+    int32_t size;
     MPI_Init(&argc, &argv); 
     MPI_Comm_size(MPI_COMM_WORLD, &size); 
     MPI_Comm_rank(MPI_COMM_WORLD, &myRank); 
@@ -155,16 +153,13 @@ int main (int argc, /*const*/ char * argv[]) {
     //-------------------------------------------------------------------------------
     // reading input files and prepare grid
     //-------------------------------------------------------------------------------
+    status = init_cifog(iniFile, &simParam, &redshift_list, &grid, &integralTable, &photIonBgList, &num_cycles, myRank); 
+    if (status !=  EXIT_SUCCESS)
+    {
+      exit(EXIT_FAILURE);
+    } 
     
-    //read paramter file
-    simParam = readConfObj(iniFile);
-    
-    if(simParam->calc_ion_history == 1){
-        num_cycles = simParam->num_snapshots;
-    }else{
-        num_cycles = 1;
-    }
-    
+    // Do some test output.
     if(myRank==0)
     {
         printf("\n++++\nTEST OUTPUT\n");
@@ -190,68 +185,8 @@ int main (int argc, /*const*/ char * argv[]) {
         printf("z = 14.75: mfp(M2000) = %e\n", dd_calc_mfp(simParam, 0.5e-15, 1.e4, 14.75));
         printf("done\n+++\n");
     }
-    
-    //verify that helium runs contain helium!
-    if(simParam->solve_He == 1)
-    {
-        if(simParam->Y <= 0.)
-        {
-            fprintf(stderr, "If you include helium its mass fraction Y should be larger than zero!\n");
-            exit(EXIT_FAILURE);
-        }
-    }
-    
-    //read redshift files with outputs
-    redshift_list = NULL;
-    if(myRank==0) printf("\n++++\nreading redshift list of files and outputs... ");
-    redshift_list = read_redshift_list(simParam->redshift_file, num_cycles);
-    if(redshift_list != NULL)
-    {
-      if (simParam->inputfiles_simulation == 1)
-      { 
-        num_cycles = simParam->stop_snapshot - simParam->SimulationLowSnap + 1;
-      }
-      else
-      {
-        num_cycles = simParam->stop_snapshot + 1;
-      } 
-    }
 
-    if(myRank==0) printf("done\n+++\n");
-
-    //read files (allocate grid)
-    grid = initGrid();
-    if(myRank==0) printf("\n++++\nreading files to grid... ");
-    read_files_to_grid(grid, simParam);
-    if(myRank==0) printf("done\n+++\n");
-    
-    //read photoionization background values 
-    if(myRank==0) printf("\n++++\nreading photoionization background rates... ");
-    photIonBgList = read_photIonlist(simParam->photHI_bg_file);
-    if(myRank==0) printf("done\n+++\n");
-    
-    if(simParam->calc_recomb == 2)
-    {
-        //read table for recombinations
-        if(myRank==0) printf("\n++++\nread table for recombinations... ");
-        integralTable = initIntegralTable(simParam->zmin, simParam->zmax, simParam->dz, simParam->fmin, simParam->fmax, simParam->df, simParam->dcellmin, simParam->dcellmax, simParam->ddcell);
-        if(myRank==0) printf("done\n+++\n");
-    }
-
-    printf("\nThis run computes %d times the ionization field (num_cycles)\n", num_cycles);
-    if(simParam->calc_ion_history == 1)
-    {
-        zstart = simParam->redshift_prev_snap;
-        zend = simParam->redshift;
-        
-        if(redshift_list == NULL)
-        {
-            simParam->redshift_prev_snap = zstart;
-            delta_redshift = (zstart-zend)/(double)num_cycles;
-            simParam->redshift = zstart - delta_redshift;
-        }
-    }
-    
+    // Run the actual code.
     cifog(simParam, redshift_list, grid, sourcelist, integralTable, photIonBgList, num_cycles, myRank, RestartMode);
     
 

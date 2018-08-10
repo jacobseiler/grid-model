@@ -1,4 +1,5 @@
 SOURCES := 	./src/main.c \
+		./src/init.c \
 		./src/confObj.c \
 		./src/parse_ini.c \
 		./src/xmem.c \
@@ -53,4 +54,4 @@ $(EXECUTABLE): $(OBJECTS)
 	$(CC) $(CFLAGS) $< -o $@
 
 clean: 
-	rm -rf $(OBJECTS) $(DOBJECTS) $(EXECUTABLE)
+	rm -rf $(OBJECTS) $(DOBJECTS) $(EXECUTABLE) $(LIB)
