@@ -25,9 +25,13 @@ else
 endif
 
 ifdef USE-MPI
+ifeq ($(ON_CI), false) #  Don't build with MPI if we're on a continuous integration service. 
     CC := mpicc
     CFLAGS += -D __MPI
     LDFLAGS += -lfftw3_mpi
+    OPT += -DMPI  #  This creates an MPI version that can be used to process files in parallel
+    CC = mpicc  # sets the C-compiler
+endif
 else
-    CC := $(COMPILER)
+     CC := $(COMPILER)
 endif

@@ -29,9 +29,13 @@ EXECUTABLE := cifog
 LIB := libcifog.a
 
 USE-MPI ?= YES
- 
-include common.mk
 
+ON_CI ?= false
+ifeq ($(CI), true)
+    ON_CI ?= true
+endif
+
+include common.mk
 
 .PHONY: all clean clena celan celna
 
