@@ -28,7 +28,7 @@ DOBJECTS := $(SOURCES:.c=.d)
 EXECUTABLE := cifog
 LIB := libcifog.a
 
-#USE-MPI=YES
+USE-MPI ?= YES
  
 include common.mk
 

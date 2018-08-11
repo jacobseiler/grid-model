@@ -126,7 +126,7 @@ int32_t cleanup_cifog(confObj_t simParam, integral_table_t *integralTable, photI
     if(simParam->calc_recomb == 2)
     {
         //read table for recombinations
-        if(myRank==0) printf("\n++++\ndeallocating table for recominsations... ");
+        if(myRank==0) printf("\n++++\ndeallocating table for recombinations... ");
         free(integralTable);
         if(myRank==0) printf("done\n+++\n");
     }

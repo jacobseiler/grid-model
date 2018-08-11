@@ -58,6 +58,7 @@ typedef struct
 
 grid_t *initGrid();
 void read_files_to_grid(grid_t *thisGrid, confObj_t thisInput);
+int32_t cifog_zero_grids(grid_t *thisGrid, confObj_t thisInput);
 void read_array(fftw_complex *toThisArray, grid_t *thisGrid, char *filename, int double_precision);
 
 #ifdef __MPI

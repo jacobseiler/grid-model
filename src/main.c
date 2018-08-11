@@ -158,7 +158,9 @@ int main (int argc, /*const*/ char * argv[]) {
     {
       exit(EXIT_FAILURE);
     } 
-    
+   
+    cifog_zero_grids(grid, simParam);
+ 
     // Do some test output.
     if(myRank==0)
     {

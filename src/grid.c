@@ -82,7 +82,7 @@ void read_files_to_grid(grid_t *thisGrid, confObj_t thisInput)
 #ifdef __MPI
 	ptrdiff_t alloc_local, local_n0, local_0_start;
 #else
-	ptrdiff_t local_n0;
+  ptrdiff_t local_n0;
 #endif
 	int nbins;
 	
@@ -166,7 +166,20 @@ void read_files_to_grid(grid_t *thisGrid, confObj_t thisInput)
     }
 
 #endif
+    
+#ifdef __MPI
+	MPI_Barrier(MPI_COMM_WORLD);
+#endif
+}
 
+int32_t cifog_zero_grids(grid_t *thisGrid, confObj_t thisInput)
+{
+
+  int32_t nbins, local_n0;
+
+	nbins = thisGrid->nbins; 
+	local_n0 = nbins;
+	
 	initialize_grid(thisGrid->igm_density, nbins, local_n0, 0.);
 	initialize_grid(thisGrid->igm_clump, nbins, local_n0, 1.);
     
@@ -180,7 +193,7 @@ void read_files_to_grid(grid_t *thisGrid, confObj_t thisInput)
   initialize_grid(thisGrid->nrec, nbins, local_n0, 0.);
 	initialize_grid(thisGrid->photHI, nbins, local_n0, 0.);
 	
-    if(solve_He == 1){
+    if(thisInput->solve_He == 1){
         initialize_grid(thisGrid->nion_HeI, nbins, local_n0, 0.);
         initialize_grid(thisGrid->nion_HeII, nbins, local_n0, 0.);
         initialize_grid(thisGrid->cum_nion_HeI, nbins, local_n0, 0.);
@@ -197,11 +210,16 @@ void read_files_to_grid(grid_t *thisGrid, confObj_t thisInput)
         initialize_grid(thisGrid->nrec_HeI, nbins, local_n0, 0.);
         initialize_grid(thisGrid->nrec_HeII, nbins, local_n0, 0.);
     }
-    
+
 #ifdef __MPI
 	MPI_Barrier(MPI_COMM_WORLD);
 #endif
+
+  return EXIT_SUCCESS;
+ 
 }
+
+
 
 void read_array(fftw_complex *toThisArray, grid_t *thisGrid, char *filename, int double_precision)
 {
