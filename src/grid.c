@@ -72,6 +72,10 @@ grid_t *initGrid()
     //domain decomposition
 	newGrid->local_n0 = 0;
 	newGrid->local_0_start = 0;
+
+#ifdef __MPI
+  MPI_Barrier(MPI_COMM_WORLD);
+#endif
 	
 	return newGrid;
 }
@@ -175,10 +179,16 @@ void read_files_to_grid(grid_t *thisGrid, confObj_t thisInput)
 int32_t cifog_zero_grids(grid_t *thisGrid, confObj_t thisInput)
 {
 
-  int32_t nbins, local_n0;
+  int32_t nbins;
+  ptrdiff_t local_n0;
 
 	nbins = thisGrid->nbins; 
 	local_n0 = nbins;
+
+#ifdef __MPI
+  ptrdiff_t alloc_local, local_0_start; 
+  alloc_local = fftw_mpi_local_size_3d(nbins, nbins, nbins, MPI_COMM_WORLD, &local_n0, &local_0_start);
+#endif
 	
 	initialize_grid(thisGrid->igm_density, nbins, local_n0, 0.);
 	initialize_grid(thisGrid->igm_clump, nbins, local_n0, 1.);
