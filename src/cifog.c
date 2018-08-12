@@ -69,8 +69,6 @@ int cifog(confObj_t simParam, const double *redshift_list, grid_t *grid, sourcel
       start_cycle = 0;
     }
 
-    printf("num_cycles %d\n", num_cycles);
-    exit(0);
     for(int cycle=start_cycle; cycle<num_cycles; cycle++)
     {
         if(redshift_list != NULL)
