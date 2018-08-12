@@ -2,12 +2,20 @@
 #include <stdlib.h>
 #include <complex.h>
 
+#ifdef MPI
+#include <fftw3-mpi.h>
+#include <mpi.h>
+#else
+#include <fftw3.h>
+#endif
+
 #ifdef __MPI
 #include <fftw3-mpi.h>
 #include <mpi.h>
 #else
 #include <fftw3.h>
 #endif
+
 
 #include "confObj.h"
 #include "grid.h"

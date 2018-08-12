@@ -69,6 +69,8 @@ int cifog(confObj_t simParam, const double *redshift_list, grid_t *grid, sourcel
       start_cycle = 0;
     }
 
+    printf("num_cycles %d\n", num_cycles);
+    exit(0);
     for(int cycle=start_cycle; cycle<num_cycles; cycle++)
     {
         if(redshift_list != NULL)
@@ -77,8 +79,6 @@ int cifog(confObj_t simParam, const double *redshift_list, grid_t *grid, sourcel
             simParam->redshift = redshift_list[2*(cycle + 1)];
             delta_redshift = redshift_list[2*cycle] - redshift_list[2*(cycle + 1)];
            
-            printf("Redshift List no null");
-            printf("%.4f\n", redshift_list[2*cycle+1]); 
             if((redshift_list[2*cycle+1] == 1) || (cycle == 0)) 
               snap++;
         }
