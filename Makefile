@@ -28,7 +28,7 @@ DOBJECTS := $(SOURCES:.c=.d)
 EXECUTABLE := cifog
 LIB := libcifog.a
 
-USE-MPI ?= YES
+USE-MPI ?= true
 
 ON_CI ?= false
 ifeq ($(CI), true)

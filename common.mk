@@ -24,7 +24,7 @@ else
     COMPILER := gcc
 endif
 
-ifdef USE-MPI
+ifeq ($(USE-MPI), true)
 ifeq ($(ON_CI), false) #  Don't build with MPI if we're on a continuous integration service. 
     CC := mpicc
     CFLAGS += -D __MPI
