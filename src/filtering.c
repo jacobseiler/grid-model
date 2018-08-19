@@ -384,7 +384,7 @@ void adapt_HeII_to_HeIII(grid_t *thisGrid)
     }
 }
 
-void compute_ionization_field(confObj_t simParam, grid_t *thisGrid, int specie)
+void compute_ionization_field(confObj_t simParam, grid_t *thisGrid, int specie, int32_t myRank)
 {
     int nbins;
     float smooth_scale;
@@ -519,8 +519,10 @@ void compute_ionization_field(confObj_t simParam, grid_t *thisGrid, int specie)
     lin_bins = lin_scales/box_size*(float)nbins;
     factor_exponent = inc_log_scales/lin_bins;
     num_scales = (log(max_scale/lin_scales) + lin_bins*log(1.+factor_exponent))/log(1. + factor_exponent );
-    printf("\n #linear bins = %e\t factor_exponent = %e\t #tophat filter sizes = %d\n", lin_bins, factor_exponent, num_scales);
-    
+    if (myRank == 0)
+    {
+      printf("\n #linear bins = %e\t factor_exponent = %e\t #tophat filter sizes = %d\n", lin_bins, factor_exponent, num_scales);
+    }
     
     /* ----------------------------------------- */
     /* loop over different smoothing scales      */

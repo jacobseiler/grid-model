@@ -66,7 +66,10 @@ int32_t init_cifog(char *iniFile, confObj_t *simParam, double **redshift_list, g
     
     //read redshift files with outputs
     *redshift_list = NULL;
-    if(myRank==0) printf("\n++++\nreading redshift list of files and outputs... ");
+    if(myRank==0)
+    { 
+      printf("\n++++\nreading redshift list of files and outputs... ");
+    }
     *redshift_list = read_redshift_list((*simParam)->redshift_file, *num_cycles);
     if(*redshift_list != NULL)
     {

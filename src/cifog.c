@@ -266,7 +266,7 @@ int cifog(confObj_t simParam, const double *redshift_list, grid_t *grid, sourcel
         
         //apply filtering
         if(myRank==0) printf("\n++++\nHII: apply tophat filter routine for ionization field... ");
-        compute_ionization_field(simParam, grid, 0);
+        compute_ionization_field(simParam, grid, 0, myRank);
         if(myRank==0) printf("done\n+++\n");
         
         //write ionization field to file
@@ -296,8 +296,8 @@ int cifog(confObj_t simParam, const double *redshift_list, grid_t *grid, sourcel
         
             //apply filtering
             if(myRank==0) printf("\n++++\nHeII/HeIII: apply tophat filter routine for ionization field... ");
-            compute_ionization_field(simParam, grid, 1);
-            compute_ionization_field(simParam, grid, 2);
+            compute_ionization_field(simParam, grid, 1, myRank);
+            compute_ionization_field(simParam, grid, 2, myRank);
             if(myRank==0) printf("done\n+++\n");
             
             //write ionization field to file
