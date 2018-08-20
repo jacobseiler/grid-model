@@ -18,7 +18,7 @@ void combine_bubble_and_web_model(fftw_complex *Xion_tmp, fftw_complex *Xion, gr
 
 void copy_grid_array(fftw_complex *Xion_tmp, fftw_complex *Xion, grid_t *thisGrid);
 
-void update_web_model(grid_t *thisGrid, confObj_t simParam);
+void update_web_model(grid_t *thisGrid, confObj_t simParam, int32_t myRank);
 
 void adapt_HeII_to_HeIII(grid_t *thisGrid);
 

@@ -26,7 +26,6 @@ void read_update_igm_density(confObj_t simParam, grid_t *thisGrid, int snap)
 	char snap_string[MAXLENGTH];
   double mean_density = 1.;
 
-  printf("Updating IGM density\n");	
 	for(int i=0; i<MAXLENGTH; i++) igm_density_file[i]='\0';
 	if(snap >= 0)
 	{
@@ -40,14 +39,19 @@ void read_update_igm_density(confObj_t simParam, grid_t *thisGrid, int snap)
     }            
 		strcat(igm_density_file, simParam->igm_density_file);   
 		strcat(igm_density_file, snap_string);
+#ifdef DEBUG
 		printf("\n reading %s\n", igm_density_file);
-  
+#endif
 	}else{  
 		strcat(igm_density_file, simParam->igm_density_file);
+#ifdef DEBUG
 		printf("\n reading %s\n", igm_density_file);
+#endif
 	}
-  
+
+#ifdef DEBUG
   printf("\n reading %s\n", igm_density_file);
+#endif
 	if(file_exist(igm_density_file) == 1)
 	{
 		read_array(thisGrid->igm_density, thisGrid, igm_density_file, simParam->input_doubleprecision);
@@ -103,10 +107,14 @@ void read_update_igm_clump(confObj_t simParam, grid_t *thisGrid, int snap)
 		strcat(igm_clump_file, simParam->igm_clump_file);
 		strcat(igm_clump_file, "_");
 		strcat(igm_clump_file, snap_string);
+#ifdef DEBUG
 		printf("\n reading %s\n", igm_clump_file);
+#endif
 	}else{
 		strcat(igm_clump_file, simParam->igm_clump_file);
+#ifdef DEBUG
 		printf("\n reading %s\n", igm_clump_file);
+#endif
 	}
   
 	if(file_exist(igm_clump_file) == 1)
@@ -122,10 +130,7 @@ void read_update_igm_clump(confObj_t simParam, grid_t *thisGrid, int snap)
 	}
 	else
 	{
-		printf(" no clumping factor file exist; assume a clumping factor = 1\n");
-
-    
-
+		printf(" no clumping factor file exist; assume a clumping factor = 1\n");   
 	}
 	
 	double sum = 0.;

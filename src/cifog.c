@@ -93,7 +93,7 @@ int cifog(confObj_t simParam, const double *redshift_list, grid_t *grid, sourcel
         if (snap == -1)
           exit(0); 
         if(myRank==0) printf("\n++++\nreading sources/nion file for snap = %d... ", snap);
-        read_update_nion(simParam, sourcelist, grid, snap);
+        read_update_nion(simParam, sourcelist, grid, snap, myRank);
         if(myRank==0) printf("done\n+++\n");
         
         if(simParam->solve_He == 1)
@@ -145,7 +145,7 @@ int cifog(confObj_t simParam, const double *redshift_list, grid_t *grid, sourcel
                     if(cycle==0){
                         simParam->mfp = f*simParam->box_size/(simParam->h * (1.+simParam->redshift))/grid->nbins;
                     }else{
-                        set_mfp_Miralda2000(simParam);
+                        set_mfp_Miralda2000(simParam, myRank);
                         printf("\n M2000: mfp(photHI = %e) = %e Mpc at z = %e", simParam->photHI_bg, simParam->mfp, simParam->redshift);
 
                         if(f*grid->mean_mfp < simParam->mfp || simParam->photHI_bg < 1.e-12)
@@ -159,7 +159,7 @@ int cifog(confObj_t simParam, const double *redshift_list, grid_t *grid, sourcel
                 
                 //compute spatial photoionization rate according to source distribution
                 if(myRank==0) printf("\n++++\ncompute photoionization rate... ");
-                compute_photHI(grid, simParam, 1);
+                compute_photHI(grid, simParam, 1, myRank);
                 if(myRank==0) printf("done\n+++\n");
             }
             /* ----------------------------------------------------------------------------------------- */
@@ -172,7 +172,7 @@ int cifog(confObj_t simParam, const double *redshift_list, grid_t *grid, sourcel
                     if(cycle==0){
                         simParam->mfp = f*simParam->box_size/(simParam->h * (1.+simParam->redshift))/grid->nbins;
                     }else{
-                        set_mfp_Miralda2000(simParam);
+                        set_mfp_Miralda2000(simParam, myRank);
                         printf("\n M2000: mfp(photHI = %e) = %e Mpc at z = %e", simParam->photHI_bg, simParam->mfp, simParam->redshift);
 
                         if(f*grid->mean_mfp < simParam->mfp || simParam->photHI_bg < 1.e-12)
@@ -186,7 +186,7 @@ int cifog(confObj_t simParam, const double *redshift_list, grid_t *grid, sourcel
                 
                 //compute spatial photoionization rate according to source distribution
                 if(myRank==0) printf("\n++++\ncompute photoionization rate... ");
-                compute_photHI(grid, simParam, 0);
+                compute_photHI(grid, simParam, 0, myRank);
                 if(myRank==0) printf("done\n+++\n");
             }
             /* ------------------------------------------------------- */
@@ -261,7 +261,7 @@ int cifog(confObj_t simParam, const double *redshift_list, grid_t *grid, sourcel
         
         //compute fraction Q
         if(myRank==0) printf("\n++++\nHII: computing relation between number of ionizing photons and absorptions... ");
-        compute_cum_values(grid, simParam, 0);
+        compute_cum_values(grid, simParam, 0, myRank);
         if(myRank==0) printf("done\n+++\n");
         
         //apply filtering
@@ -290,8 +290,8 @@ int cifog(confObj_t simParam, const double *redshift_list, grid_t *grid, sourcel
         {
             //compute fraction Q
             if(myRank==0) printf("\n++++\nHeII/HeIII: computing relation between number of ionizing photons and absorptions... ");
-            compute_cum_values(grid, simParam, 1);
-            compute_cum_values(grid, simParam, 2);
+            compute_cum_values(grid, simParam, 1, myRank);
+            compute_cum_values(grid, simParam, 2, myRank);
             if(myRank==0) printf("done\n+++\n");
         
             //apply filtering

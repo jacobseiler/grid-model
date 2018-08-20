@@ -355,7 +355,7 @@ void replace_convolve_fft_photHI(grid_t *thisGrid, confObj_t simParam, fftw_comp
     thisGrid->mean_photHI = mean_photHI;
 }
 
-void compute_photHI(grid_t *thisGrid, confObj_t simParam, int rescale)
+void compute_photHI(grid_t *thisGrid, confObj_t simParam, int rescale, int32_t myRank)
 {
 #ifdef __MPI
     ptrdiff_t alloc_local, local_n0, local_0_start;
@@ -418,7 +418,10 @@ void compute_photHI(grid_t *thisGrid, confObj_t simParam, int rescale)
         }
         else
         {
-            printf("\n mfp too small to do fft mapping...\t");
+            if (myRank == 0)
+            {
+              printf("\n mfp too small to do fft mapping...\t");
+            }
             replace_convolve_fft_photHI(thisGrid, simParam, nion, factor_photHI);
         }
 
@@ -426,7 +429,10 @@ void compute_photHI(grid_t *thisGrid, confObj_t simParam, int rescale)
         if(rescale == 1)
         {
             rescale_factor = simParam->photHI_bg/thisGrid->mean_photHI;
-            printf("\n fitting the photoionization rate field with mean value %e to the given background value by multiplying with a factor = %e\n", thisGrid->mean_photHI, rescale_factor);
+            if (myRank == 0)
+            {
+              printf("\n fitting the photoionization rate field with mean value %e to the given background value by multiplying with a factor = %e\n", thisGrid->mean_photHI, rescale_factor);
+            }
         }
                         
         for(int i=0; i<local_n0; i++)
@@ -451,9 +457,12 @@ void compute_photHI(grid_t *thisGrid, confObj_t simParam, int rescale)
         fftw_free(nion);
     }
 
-    printf("\n mfp = %e Mpc\tmfp_index = %e cells\tfactork = %e", simParam->mfp, mfp_index, factor_k);
-    printf("\n mean photHI (accounting for all cells) = %e", simParam->photHI_bg);
-    printf("\n actual mean photHI (accounting only for ionized regions) = %e\n",calc_mean_photoionization_ionized_field(thisGrid));
+    if (myRank == 0)
+    {
+      printf("\n mfp = %e Mpc\tmfp_index = %e cells\tfactork = %e", simParam->mfp, mfp_index, factor_k);
+      printf("\n mean photHI (accounting for all cells) = %e", simParam->photHI_bg);
+      printf("\n actual mean photHI (accounting only for ionized regions) = %e\n",calc_mean_photoionization_ionized_field(thisGrid));
+    }
 }
 
 void set_value_to_photoionization_field(grid_t *thisGrid, confObj_t simParam)

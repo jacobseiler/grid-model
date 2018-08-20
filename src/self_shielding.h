@@ -11,7 +11,7 @@ double calc_photHI_source(source_t *thisSource, double mfp_inv, double boxsize_M
 // void construct_photHI_filter(fftw_complex *filter, grid_t *thisGrid, confObj_t simParam);
 void convolve_fft_photHI(grid_t *thisGrid, fftw_complex *filter, fftw_complex *nion_smooth, const double factor_photHI);
 void replace_convolve_fft_photHI(grid_t *thisGrid, confObj_t simParam, fftw_complex *nion_smooth, const double factor_photHI);
-void compute_photHI(grid_t *thisGrid, confObj_t simParam, int rescale);
+void compute_photHI(grid_t *thisGrid, confObj_t simParam, int rescale, int32_t myRank);
 double calc_mean_photoionization_ionized_field(grid_t *thisGrid);
 double calc_factor_photoionization_ionfraction(grid_t *thisGrid, confObj_t simParam);
 void set_value_to_photoionization_field(grid_t *thisGrid, confObj_t simParam);

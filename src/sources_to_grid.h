@@ -2,7 +2,7 @@
 #define SOURCES_TO_GRID_H
 #endif
 
-void read_update_nion(confObj_t simParam, sourcelist_t *thisSourcelist, grid_t *thisGrid, int snap);
+void read_update_nion(confObj_t simParam, sourcelist_t *thisSourcelist, grid_t *thisGrid, int snap, int32_t myRank);
 void read_update_nion_HeI(confObj_t simParam, sourcelist_t *thisSourcelist, grid_t *thisGrid, int snap);
 void read_update_nion_HeII(confObj_t simParam, sourcelist_t *thisSourcelist, grid_t *thisGrid, int snap);
 

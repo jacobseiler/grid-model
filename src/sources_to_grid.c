@@ -21,7 +21,7 @@
 #include "sources_to_grid.h"
 
 /* read in / update sources or nion -------------------------------------------------------------*/
-void read_update_nion(confObj_t simParam, sourcelist_t *thisSourcelist, grid_t *thisGrid, int snap)
+void read_update_nion(confObj_t simParam, sourcelist_t *thisSourcelist, grid_t *thisGrid, int snap, int32_t myRank)
 {
 	char sources_file[MAXLENGTH], nion_file[MAXLENGTH];
 	char snap_string[MAXLENGTH];
@@ -76,7 +76,10 @@ void read_update_nion(confObj_t simParam, sourcelist_t *thisSourcelist, grid_t *
 		exit(EXIT_FAILURE);
 	}
 
-  printf("Boosting photons by a factor of %.4e\n", simParam->nion_factor);	
+  if (myRank == 0)
+  {
+    printf("Boosting photons by a factor of %.4e\n", simParam->nion_factor);
+  }	
  	for(int i=0; i<thisGrid->local_n0*thisGrid->nbins*thisGrid->nbins; i++)
   {
  		if(creal(thisGrid->nion[i])>0.)

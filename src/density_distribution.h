@@ -18,4 +18,4 @@ double dd_calc_integral_mass(pdf_params_t params, double upLim);
 void dd_set_norm_pdf(pdf_params_t * params, double redshift);
 double dd_frac_densSS(double densSS, confObj_t simParam);
 double dd_calc_mfp(confObj_t simParam, double photHI, double temperature, double redshift);
-void set_mfp_Miralda2000(confObj_t simParam);
+void set_mfp_Miralda2000(confObj_t simParam, int32_t myRank);

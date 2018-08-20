@@ -338,7 +338,7 @@ void copy_grid_array(fftw_complex *Xion_tmp, fftw_complex *Xion, grid_t *thisGri
     }
 }
 
-void update_web_model(grid_t *thisGrid, confObj_t simParam)
+void update_web_model(grid_t *thisGrid, confObj_t simParam, int32_t myRank)
 {
     const double f = simParam->f;
 
@@ -348,15 +348,18 @@ void update_web_model(grid_t *thisGrid, confObj_t simParam)
     {
         if(simParam->calc_mfp == 1)
         {
-            set_mfp_Miralda2000(simParam);
-            printf("\n M2000: mfp(photHI = %e) = %e Mpc at z = %e", simParam->photHI_bg, simParam->mfp, simParam->redshift);
+            set_mfp_Miralda2000(simParam, myRank);
+            if (myRank == 0)
+            {
+              printf("\n M2000: mfp(photHI = %e) = %e Mpc at z = %e", simParam->photHI_bg, simParam->mfp, simParam->redshift);
+            }
             if(f*thisGrid->mean_mfp < simParam->mfp || simParam->photHI_bg < 1.e-12)
             {
                 simParam->mfp = f*thisGrid->mean_mfp;
             }
             printf("\n mfp = %e Mpc at z = %e", simParam->mfp, simParam->redshift);
         }
-        compute_photHI(thisGrid, simParam, 0);
+        compute_photHI(thisGrid, simParam, 0, myRank);
     }
     compute_web_ionfraction(thisGrid, simParam);
 }
@@ -555,8 +558,11 @@ void compute_ionization_field(confObj_t simParam, grid_t *thisGrid, int specie, 
         
         if(inc <= lin_bins) smooth_scale = inc;
         else smooth_scale = lin_bins*pow(1. + factor_exponent, inc-lin_bins);
-        
-        printf("  inc = %e\t scale = %d\t smooth_scale = %e bins or %e cMpc\n",inc, scale, smooth_scale, (float)smooth_scale/(float)nbins*box_size);
+
+        if (myRank == 0)
+        {
+          printf("  inc = %e\t scale = %d\t smooth_scale = %e bins or %e cMpc\n",inc, scale, smooth_scale, (float)smooth_scale/(float)nbins*box_size);
+        }
 
         /* -------------------------------------------- */
         /* coonstruct tophat filter for smoothing scale */
@@ -657,7 +663,7 @@ void compute_ionization_field(confObj_t simParam, grid_t *thisGrid, int specie, 
     /* -------------------------------------------------------- */ 
     if(simParam->use_web_model == 1 && specie == 0)
     {        
-        update_web_model(thisGrid, simParam);
+        update_web_model(thisGrid, simParam, myRank);
         combine_bubble_and_web_model(Xion_tmp, Xion, thisGrid);
     }else{
         copy_grid_array(Xion_tmp, Xion, thisGrid);
