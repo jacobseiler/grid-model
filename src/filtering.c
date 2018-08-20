@@ -357,7 +357,10 @@ void update_web_model(grid_t *thisGrid, confObj_t simParam, int32_t myRank)
             {
                 simParam->mfp = f*thisGrid->mean_mfp;
             }
-            printf("\n mfp = %e Mpc at z = %e", simParam->mfp, simParam->redshift);
+            if (myRank == 0)
+            {
+              printf("\n mfp = %e Mpc at z = %e", simParam->mfp, simParam->redshift);
+            }
         }
         compute_photHI(thisGrid, simParam, 0, myRank);
     }

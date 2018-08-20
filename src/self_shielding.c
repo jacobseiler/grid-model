@@ -457,11 +457,13 @@ void compute_photHI(grid_t *thisGrid, confObj_t simParam, int rescale, int32_t m
         fftw_free(nion);
     }
 
+    double mean_ionized_regions = calc_mean_photoionization_ionized_field(thisGrid);
+
     if (myRank == 0)
     {
-      printf("\n mfp = %e Mpc\tmfp_index = %e cells\tfactork = %e", simParam->mfp, mfp_index, factor_k);
-      printf("\n mean photHI (accounting for all cells) = %e", simParam->photHI_bg);
-      printf("\n actual mean photHI (accounting only for ionized regions) = %e\n",calc_mean_photoionization_ionized_field(thisGrid));
+      printf("\n mfp = %e Mpc\tmfp_index = %e cells\tfactork = %e\n", simParam->mfp, mfp_index, factor_k);
+      printf("mean photHI (accounting for all cells) = %e\n", simParam->photHI_bg);
+      printf("actual mean photHI (accounting only for ionized regions) = %e\n", mean_ionized_regions);
     }
 }
 
