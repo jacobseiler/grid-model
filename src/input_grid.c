@@ -31,7 +31,7 @@ void read_update_igm_density(confObj_t simParam, grid_t *thisGrid, int snap)
 	{
     if (simParam->inputfiles_simulation == 1)
     {
-		  sprintf(snap_string,"%03d.dens.dat",snap+simParam->SimulationLowSnap);
+		  sprintf(snap_string,"%03d",snap+simParam->SimulationLowSnap);
     }
     else
     {
