@@ -59,6 +59,7 @@ struct confObj_struct {
     int            SimulationHighSnap;
 
     char           *igm_density_file;
+    char           *igm_density_suffix;
     int            dens_in_overdensity;
     double         mean_density;
 

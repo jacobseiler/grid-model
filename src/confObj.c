@@ -98,6 +98,8 @@ confObj_new(parse_ini_t ini)
 
     getFromIni(&(config->igm_density_file), parse_ini_get_string,
                ini, "inputIgmDensityFile", "Input");
+    getFromIni(&(config->igm_density_suffix), parse_ini_get_string,
+               ini, "inputIgmDensitySuffix", "Input");
     getFromIni(&(config->dens_in_overdensity), parse_ini_get_int32,
                ini, "densityInOverdensity", "Input");
     getFromIni(&(config->mean_density), parse_ini_get_double,
@@ -208,6 +210,7 @@ confObj_del(confObj_t *config)
     
     //Input
     xfree((*config)->igm_density_file);
+    xfree((*config)->igm_density_suffix);
     xfree((*config)->igm_clump_file);
     xfree((*config)->sources_file);
     xfree((*config)->nion_file);

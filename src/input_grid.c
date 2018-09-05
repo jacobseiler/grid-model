@@ -37,12 +37,13 @@ void read_update_igm_density(confObj_t simParam, grid_t *thisGrid, int snap)
     {
 		  sprintf(snap_string,"%03d",snap);
     }            
-		strcat(igm_density_file, simParam->igm_density_file);   
+		strcat(igm_density_file, simParam->igm_density_file);
 		strcat(igm_density_file, snap_string);
+		strcat(igm_density_file, simParam->igm_density_suffix);
 #ifdef DEBUG
 		printf("\n reading %s\n", igm_density_file);
 #endif
-	}else{  
+	}else{
 		strcat(igm_density_file, simParam->igm_density_file);
 #ifdef DEBUG
 		printf("\n reading %s\n", igm_density_file);

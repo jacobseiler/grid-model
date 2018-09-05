@@ -130,6 +130,9 @@ Parameter file
 - ``SimulationHighSnap``: same as ``SimulationLowSnap`` but for the largest snapshot number being read in 
 
 - ``inputIgmDensityFile``: name of density file containing 3D density grid (if multiple then just the basename and neglecting extensions _00i)
+- ``inputIgmDensitySuffix``: suffix of the above file (e.g., if the file is
+                             ``snap043.dens.dat`` then ``inputIgmDensitySuffix``
+                             should be set as ``.dens.dat`` 
 - ``densityInOverdensity``: set to 1 if density is in terms of overdensity i.e. rho/mean(rho), otherwise 0
 - ``meanDensity``: assumed mean density, density is evolved as dens(z) = meanDensity*(1+z)^3 (only effective when ``useDefaultMeanDensity=0``)
 
