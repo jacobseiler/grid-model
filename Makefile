@@ -1,5 +1,7 @@
-SOURCES := 	./src/main.c \
-		./src/init.c \
+LIBNAME := cifog
+EXEC := $(LIBNAME)
+ 
+LIBSRC:=./src/init.c \
 		./src/confObj.c \
 		./src/parse_ini.c \
 		./src/xmem.c \
@@ -23,10 +25,11 @@ SOURCES := 	./src/main.c \
 		./src/restart.c \
 		./src/cifog.c
 
-OBJECTS := $(SOURCES:.c=.o)
-DOBJECTS := $(SOURCES:.c=.d)
-EXECUTABLE := cifog
-LIB := libcifog.a
+SRC:= ./src/main.c $(LIBSRC)
+OBJS := $(SRC:.c=.o)
+
+LIBOBJS := $(LIBSRC:.c=.o)
+CIFOGLIB := lib$(LIBNAME).a
 
 USE-MPI ?= true
 
@@ -39,23 +42,20 @@ include common.mk
 
 .PHONY: all clean clena celan celna
 
-default: lib
+all: $(EXEC) 
 
-lib: $(SOURCES) $(LIB)
+$(EXEC): $(SOURCES) $(EXECUTABLE)
 
-exec: $(SOURCES) $(EXECUTABLE)
+$(CIFOGLIB): $(LIBOBJS)
+	ar rcs $@ $(LIBOBJS)
 
-celan celna clena:clean
-
-$(LIB): $(OBJECTS)
-	$(CC) $(OBJECTS) -c $(LDFLAGS)
-	ar rcs $(LIB) $(OBJECTS)
-
-$(EXECUTABLE): $(OBJECTS)
-	$(CC) $(OBJECTS) $(LDFLAGS) -o $@
+$(EXEC): $(OBJS) $(CIFOGLIB)
+	$(CC) $(OBJS) $(LDFLAGS) -o $@
 
 .c.o:
 	$(CC) $(CFLAGS) $< -o $@
 
-clean: 
-	rm -rf $(OBJECTS) $(DOBJECTS) $(EXECUTABLE) $(LIB)
+.phony: clean celan celna clena tests
+celan celna clena: clean
+clean:
+	rm -rf $(OBJS) $(EXEC) $(CIFOGLIB)
