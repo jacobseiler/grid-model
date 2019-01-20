@@ -66,7 +66,7 @@ struct confObj_struct {
     char           *igm_clump_file;
     
     char           *sources_file;
-    char           *nion_file;
+    char           *nion_file[512];
     double         nion_factor;   
  
     //Output
