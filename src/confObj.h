@@ -25,7 +25,7 @@ struct confObj_struct {
     //General
     int            num_snapshots;
     int32_t        stop_snapshot;
-    char           *redshift_file[512];
+    char           redshift_file[512];
     double         redshift_prev_snap;
     double         redshift;
     double         evol_time;
@@ -58,22 +58,22 @@ struct confObj_struct {
     int            SimulationLowSnap;
     int            SimulationHighSnap;
 
-    char           *igm_density_file[512];
-    char           *igm_density_suffix[512];
+    char           igm_density_file[512];
+    char           igm_density_suffix[512];
     int            dens_in_overdensity;
     double         mean_density;
 
-    char           *igm_clump_file[512];
+    char           igm_clump_file[512];
     
-    char           *sources_file[512];
-    char           *nion_file[512];
+    char           sources_file[512];
+    char           nion_file[512];
     double         nion_factor;   
  
     //Output
-    char           *out_XHII_file[512];
+    char           out_XHII_file[512];
     int            write_photHI_file;
-    char           *out_photHI_file[512];
-    char           *out_restart_file[512];
+    char           out_photHI_file[512];
+    char           out_restart_file[512];
     
     //Cosmology
     double         h;
@@ -84,29 +84,29 @@ struct confObj_struct {
     double         Y;
     
     //Photoionization
-    char           *photHI_bg_file[512];
+    char           photHI_bg_file[512];
     double         photHI_bg;
     double         mfp;
     double         source_slope_index;
 
     //Recombinations
     double         dnrec_dt;
-    char           *recomb_table[512];
+    char           recomb_table[512];
     double         zmin, zmax, dz;
     double         fmin, fmax, df;
     double         dcellmin, dcellmax, ddcell;
     
     //Helium
-    char           *sources_HeI_file[512];
-    char           *nion_HeI_file[512];
-    char           *sources_HeII_file[512];
-    char           *nion_HeII_file[512];
+    char           sources_HeI_file[512];
+    char           nion_HeI_file[512];
+    char           sources_HeII_file[512];
+    char           nion_HeII_file[512];
     
     double         dnrec_HeI_dt;
     double         dnrec_HeII_dt;
     
-    char           *out_XHeII_file[512];
-    char           *out_XHeIII_file[512];
+    char           out_XHeII_file[512];
+    char           out_XHeIII_file[512];
     
     double         f;
     double         factor;
