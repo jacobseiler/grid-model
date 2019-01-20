@@ -115,8 +115,7 @@ int32_t init_cifog(char *iniFile, confObj_t *simParam, double **redshift_list, g
             (*simParam)->redshift_prev_snap = zstart;
             delta_redshift = (zstart-zend)/(double)*num_cycles;
             (*simParam)->redshift = zstart - delta_redshift;
-            printf("ROQEJROEQJR\n");
-            exit(0);
+            printf("Redshift list is NULL.\n");
         }
     }
 

@@ -155,6 +155,7 @@ parse_ini_open(const char *fname)
 		switch (line[0]) {
 		case '\0':
 		/* This is an empty line, we do nothing. */
+    case '%':
 		case '#':
 			/* Ignore comment lines */
 			break;
