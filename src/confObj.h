@@ -58,22 +58,22 @@ struct confObj_struct {
     int            SimulationLowSnap;
     int            SimulationHighSnap;
 
-    char           igm_density_file[512];
-    char           igm_density_suffix[512];
+    char           *igm_density_file;
+    char           *igm_density_suffix;
     int            dens_in_overdensity;
     double         mean_density;
 
-    char           igm_clump_file[512];
+    char           *igm_clump_file;
     
-    char           sources_file[512];
-    char           nion_file[512];
+    char           *sources_file;
+    char           *nion_file;
     double         nion_factor;   
  
     //Output
-    char           out_XHII_file[512];
+    char           *out_XHII_file;
     int            write_photHI_file;
-    char           out_photHI_file[512];
-    char           out_restart_file[512];
+    char           *out_photHI_file;
+    char           *out_restart_file;
     
     //Cosmology
     double         h;
@@ -84,29 +84,29 @@ struct confObj_struct {
     double         Y;
     
     //Photoionization
-    char           photHI_bg_file[512];
+    char           *photHI_bg_file;
     double         photHI_bg;
     double         mfp;
     double         source_slope_index;
 
     //Recombinations
     double         dnrec_dt;
-    char           recomb_table[512];
+    char           *recomb_table;
     double         zmin, zmax, dz;
     double         fmin, fmax, df;
     double         dcellmin, dcellmax, ddcell;
     
     //Helium
-    char           sources_HeI_file[512];
-    char           nion_HeI_file[512];
-    char           sources_HeII_file[512];
-    char           nion_HeII_file[512];
+    char           *sources_HeI_file;
+    char           *nion_HeI_file;
+    char           *sources_HeII_file;
+    char           *nion_HeII_file;
     
     double         dnrec_HeI_dt;
     double         dnrec_HeII_dt;
     
-    char           out_XHeII_file[512];
-    char           out_XHeIII_file[512];
+    char           *out_XHeII_file;
+    char           *out_XHeIII_file;
     
     double         f;
     double         factor;

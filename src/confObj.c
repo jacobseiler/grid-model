@@ -35,9 +35,9 @@ confObj_new(parse_ini_t ini)
     
     //General
     getFromIni(&(config->num_snapshots), parse_ini_get_int32,
-               ini, "numSnapshots", "General");    
+               ini, "numSnapshots", "General");
     getFromIni(&(config->stop_snapshot), parse_ini_get_int32,
-               ini, "stopSnapshot", "General");    
+               ini, "stopSnapshot", "General");
     getFromIni(&(config->redshift_file), parse_ini_get_string,
                ini, "redshiftFile", "General");
     getFromIni(&(config->redshift_prev_snap), parse_ini_get_double,
