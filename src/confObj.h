@@ -25,7 +25,7 @@ struct confObj_struct {
     //General
     int            num_snapshots;
     int32_t        stop_snapshot;
-    char           redshift_file;
+    char           *redshift_file;
     double         redshift_prev_snap;
     double         redshift;
     double         evol_time;
