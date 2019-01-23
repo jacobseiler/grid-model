@@ -451,7 +451,7 @@ extern bool
 parse_ini_get_string(parse_ini_t ini,
                      const char  *key_name,
                      const char  *section_name,
-                     char        **value)
+                     char        *value)
 {
 	int  sec, key;
 	char *tmp = NULL;
@@ -475,7 +475,7 @@ parse_ini_get_string(parse_ini_t ini,
 	if (tmp == NULL)
 		return false;
 
-	*value                                 = tmp;
+	value                                 = tmp;
 	/* This was now (successfully) requested */
 	ini->sections[sec].keys[key].requested = true;
 	/* Success! */

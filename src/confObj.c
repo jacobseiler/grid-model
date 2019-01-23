@@ -38,7 +38,7 @@ confObj_new(parse_ini_t ini)
                ini, "numSnapshots", "General");
     getFromIni(&(config->stop_snapshot), parse_ini_get_int32,
                ini, "stopSnapshot", "General");
-    getFromIni(&(config->redshift_file), parse_ini_get_string,
+    getFromIni(config->redshift_file, parse_ini_get_string,
                ini, "redshiftFile", "General");
     getFromIni(&(config->redshift_prev_snap), parse_ini_get_double,
                ini, "redshift_prevSnapshot", "General");
@@ -96,33 +96,33 @@ confObj_new(parse_ini_t ini)
     getFromIni(&(config->SimulationHighSnap), parse_ini_get_int32,
                ini, "SimulationHighSnap", "Input");
 
-    getFromIni(&(config->igm_density_file), parse_ini_get_string,
+    getFromIni(config->igm_density_file, parse_ini_get_string,
                ini, "inputIgmDensityFile", "Input");
-    getFromIni(&(config->igm_density_suffix), parse_ini_get_string,
+    getFromIni(config->igm_density_suffix, parse_ini_get_string,
                ini, "inputIgmDensitySuffix", "Input");
     getFromIni(&(config->dens_in_overdensity), parse_ini_get_int32,
                ini, "densityInOverdensity", "Input");
     getFromIni(&(config->mean_density), parse_ini_get_double,
                ini, "meanDensity", "Input");
     
-    getFromIni(&(config->igm_clump_file), parse_ini_get_string,
+    getFromIni(config->igm_clump_file, parse_ini_get_string,
                ini, "inputIgmClumpFile", "Input");
     
     
-    getFromIni(&(config->sources_file), parse_ini_get_string,
+    getFromIni(config->sources_file, parse_ini_get_string,
                ini, "inputSourcesFile", "Input");
-    getFromIni(&(config->nion_file), parse_ini_get_string,
+    getFromIni(config->nion_file, parse_ini_get_string,
                ini, "inputNionFile", "Input");
     getFromIni(&(config->nion_factor), parse_ini_get_double,
                ini, "nion_factor", "Input");
     //Output
-    getFromIni(&(config->out_XHII_file), parse_ini_get_string,
+    getFromIni(config->out_XHII_file, parse_ini_get_string,
                ini, "output_XHII_file", "Output");
     getFromIni(&(config->write_photHI_file), parse_ini_get_int32,
                ini, "write_photHI_file", "Output");
-    getFromIni(&(config->out_photHI_file), parse_ini_get_string,
+    getFromIni(config->out_photHI_file, parse_ini_get_string,
                ini, "output_photHI_file", "Output");
-    getFromIni(&(config->out_restart_file), parse_ini_get_string,
+    getFromIni(config->out_restart_file, parse_ini_get_string,
                ini, "output_restart_file", "Output");
     
     //Cosmology
@@ -140,7 +140,7 @@ confObj_new(parse_ini_t ini)
                ini, "Y", "Cosmology");
 
     //Photoionization
-    getFromIni(&(config->photHI_bg_file), parse_ini_get_string,
+    getFromIni(config->photHI_bg_file, parse_ini_get_string,
                ini, "photHI_bg_file", "Photoionization")
     getFromIni(&(config->photHI_bg), parse_ini_get_double,
                ini, "photHI_bg", "Photoionization");
@@ -152,7 +152,7 @@ confObj_new(parse_ini_t ini)
     //Recombinations
     getFromIni(&(config->dnrec_dt), parse_ini_get_double,
                ini, "dnrec_dt", "Recombinations");
-    getFromIni(&(config->recomb_table), parse_ini_get_string,
+    getFromIni(config->recomb_table, parse_ini_get_string,
                ini, "recombinationTable", "Recombinations");
     getFromIni(&(config->zmin), parse_ini_get_double,
                ini, "zmin", "Recombinations");
@@ -174,13 +174,13 @@ confObj_new(parse_ini_t ini)
                ini, "ddcell", "Recombinations");
 
     //Helium
-    getFromIni(&(config->sources_HeI_file), parse_ini_get_string,
+    getFromIni(config->sources_HeI_file, parse_ini_get_string,
                ini, "inputSourcesHeIFile", "Helium");
-    getFromIni(&(config->nion_HeI_file), parse_ini_get_string,
+    getFromIni(config->nion_HeI_file, parse_ini_get_string,
                ini, "inputNionHeIFile", "Helium");
-    getFromIni(&(config->sources_HeII_file), parse_ini_get_string,
+    getFromIni(config->sources_HeII_file, parse_ini_get_string,
                ini, "inputSourcesHeIIFile", "Helium");
-    getFromIni(&(config->nion_HeII_file), parse_ini_get_string,
+    getFromIni(config->nion_HeII_file, parse_ini_get_string,
                ini, "inputNionHeIIFile", "Helium");
     
     getFromIni(&(config->dnrec_HeI_dt), parse_ini_get_double,
@@ -188,9 +188,9 @@ confObj_new(parse_ini_t ini)
     getFromIni(&(config->dnrec_HeII_dt), parse_ini_get_double,
                ini, "dnrec_HeII_dt", "Helium");
     
-    getFromIni(&(config->out_XHeII_file), parse_ini_get_string,
+    getFromIni(config->out_XHeII_file, parse_ini_get_string,
                ini, "output_XHeII_file", "Helium");
-    getFromIni(&(config->out_XHeIII_file), parse_ini_get_string,
+    getFromIni(config->out_XHeIII_file, parse_ini_get_string,
                ini, "output_XHeIII_file", "Helium");
     
     config->f = 0.69;

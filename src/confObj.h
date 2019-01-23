@@ -6,7 +6,7 @@
  *  Copyright 2010 __MyCompanyName__. All rights reserved.
  *
  */
-
+#define MAX_STRING_LEN 1024
 #ifndef CONFOBJ_H
 #define CONFOBJ_H
 
@@ -25,7 +25,7 @@ struct confObj_struct {
     //General
     int            num_snapshots;
     int32_t        stop_snapshot;
-    char           *redshift_file;
+    char           redshift_file[MAX_STRING_LEN];
     double         redshift_prev_snap;
     double         redshift;
     double         evol_time;
@@ -58,22 +58,22 @@ struct confObj_struct {
     int            SimulationLowSnap;
     int            SimulationHighSnap;
 
-    char           *igm_density_file;
-    char           *igm_density_suffix;
+    char           igm_density_file[MAX_STRING_LEN];
+    char           igm_density_suffix[MAX_STRING_LEN];
     int            dens_in_overdensity;
     double         mean_density;
 
-    char           *igm_clump_file;
+    char           igm_clump_file[MAX_STRING_LEN];
     
-    char           *sources_file;
-    char           *nion_file;
+    char           sources_file[MAX_STRING_LEN];
+    char           nion_file[MAX_STRING_LEN];
     double         nion_factor;   
  
     //Output
-    char           *out_XHII_file;
+    char           out_XHII_file[MAX_STRING_LEN];
     int            write_photHI_file;
-    char           *out_photHI_file;
-    char           *out_restart_file;
+    char           out_photHI_file[MAX_STRING_LEN];
+    char           out_restart_file[MAX_STRING_LEN];
     
     //Cosmology
     double         h;
@@ -84,29 +84,29 @@ struct confObj_struct {
     double         Y;
     
     //Photoionization
-    char           *photHI_bg_file;
+    char           photHI_bg_file[MAX_STRING_LEN];
     double         photHI_bg;
     double         mfp;
     double         source_slope_index;
 
     //Recombinations
     double         dnrec_dt;
-    char           *recomb_table;
+    char           recomb_table[MAX_STRING_LEN];
     double         zmin, zmax, dz;
     double         fmin, fmax, df;
     double         dcellmin, dcellmax, ddcell;
     
     //Helium
-    char           *sources_HeI_file;
-    char           *nion_HeI_file;
-    char           *sources_HeII_file;
-    char           *nion_HeII_file;
+    char           sources_HeI_file[MAX_STRING_LEN];
+    char           nion_HeI_file[MAX_STRING_LEN];
+    char           sources_HeII_file[MAX_STRING_LEN];
+    char           nion_HeII_file[MAX_STRING_LEN];
     
     double         dnrec_HeI_dt;
     double         dnrec_HeII_dt;
     
-    char           *out_XHeII_file;
-    char           *out_XHeIII_file;
+    char           out_XHeII_file[MAX_STRING_LEN];
+    char           out_XHeIII_file[MAX_STRING_LEN];
     
     double         f;
     double         factor;
