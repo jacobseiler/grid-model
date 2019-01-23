@@ -475,7 +475,10 @@ parse_ini_get_string(parse_ini_t ini,
 	if (tmp == NULL)
 		return false;
 
-	*value                                 = tmp;
+  /* Keep the strings fixed in size to allow more handling later on. */
+  char *tmp2 = realloc(tmp, 1024);
+
+	*value                                 = tmp2;
 	/* This was now (successfully) requested */
 	ini->sections[sec].keys[key].requested = true;
 	/* Success! */
