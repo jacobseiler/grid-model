@@ -6,7 +6,7 @@
  *  Copyright 2010 __MyCompanyName__. All rights reserved.
  *
  */
-#define MAX_STRING_LEN 1024
+
 #ifndef CONFOBJ_H
 #define CONFOBJ_H
 
@@ -59,22 +59,22 @@ struct confObj_struct {
     int            SimulationLowSnap;
     int            SimulationHighSnap;
 
-    char           igm_density_file[MAX_STRING_LEN];
-    char           igm_density_suffix[MAX_STRING_LEN];
+    char           *igm_density_file;
+    char           *igm_density_suffix;
     int            dens_in_overdensity;
     double         mean_density;
 
-    char           igm_clump_file[MAX_STRING_LEN];
+    char           *igm_clump_file;
     
-    char           sources_file[MAX_STRING_LEN];
-    char           nion_file[MAX_STRING_LEN];
+    char           *sources_file;
+    char           *nion_file;
     double         nion_factor;   
  
     //Output
-    char           out_XHII_file[MAX_STRING_LEN];
+    char           *out_XHII_file;
     int            write_photHI_file;
-    char           out_photHI_file[MAX_STRING_LEN];
-    char           out_restart_file[MAX_STRING_LEN];
+    char           *out_photHI_file;
+    char           *out_restart_file;
     
     //Cosmology
     double         h;
@@ -85,29 +85,29 @@ struct confObj_struct {
     double         Y;
     
     //Photoionization
-    char           photHI_bg_file[MAX_STRING_LEN];
+    char           *photHI_bg_file;
     double         photHI_bg;
     double         mfp;
     double         source_slope_index;
 
     //Recombinations
     double         dnrec_dt;
-    char           recomb_table[MAX_STRING_LEN];
+    char           *recomb_table;
     double         zmin, zmax, dz;
     double         fmin, fmax, df;
     double         dcellmin, dcellmax, ddcell;
     
     //Helium
-    char           sources_HeI_file[MAX_STRING_LEN];
-    char           nion_HeI_file[MAX_STRING_LEN];
-    char           sources_HeII_file[MAX_STRING_LEN];
-    char           nion_HeII_file[MAX_STRING_LEN];
+    char           *sources_HeI_file;
+    char           *nion_HeI_file;
+    char           *sources_HeII_file;
+    char           *nion_HeII_file;
     
     double         dnrec_HeI_dt;
     double         dnrec_HeII_dt;
     
-    char           out_XHeII_file[MAX_STRING_LEN];
-    char           out_XHeIII_file[MAX_STRING_LEN];
+    char           *out_XHeII_file;
+    char           *out_XHeIII_file;
     
     double         f;
     double         factor;
